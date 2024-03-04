@@ -1,0 +1,120 @@
+[
+    {
+      "categoryId": 1,
+      "category": "Tech",
+      "subcategories": [
+        {
+          "subcategoryId": 1,
+          "subcategory": "Tech Tehwar",
+          "articles": [
+            {"articleId": 1, "article": "tehwar1"},
+            {"articleId": 2, "article": "tehwar2"}
+          ]
+        },
+        {
+          "subcategoryId": 2,
+          "subcategory": "Techoloco",
+          "articles": [
+            {"articleId": 3, "article": "Techoloco1"},
+            {"articleId": 4, "article": "Techoloco2"}
+          ]
+        }
+      ]
+    },
+    {
+      "categoryId": 2,
+      "category": "React",
+      "subcategories": [
+        {
+          "subcategoryId": 3,
+          "subcategory": "Redux",
+          "articles": [
+            {"articleId": 5, "article": "Redux1"},
+            {"articleId": 6, "article": "Redux2"}
+          ]
+        },
+        {
+          "subcategoryId": 4,
+          "subcategory": "Context",
+          "articles": [
+            {"articleId": 7, "article": "Context1"},
+            {"articleId": 8, "article": "Context2"}
+          ]
+        }
+      ]
+    },
+
+
+    {
+      "categoryId": 3,
+      "category": "Stack",
+      "subcategories": [
+        {
+          "subcategoryId": 3,
+          "subcategory": "FullStack",
+          "articles": [
+            {"articleId": 9, "article": "FullStack1"},
+            {"articleId": 10, "article": "FullStack2"}
+          ]
+        },
+        {
+          "subcategoryId": 4,
+          "subcategory": "GitStack",
+          "articles": [
+            {"articleId": 11, "article": "GitStack1"},
+            {"articleId": 12, "article": "GitStack2"}
+          ]
+        }
+      ]
+    },
+
+    {
+      "categoryId": 4,
+      "category": "Common",
+      "subcategories": [
+        {
+          "subcategoryId": 4,
+          "subcategory": "Sandwich",
+          "articles": [
+            {"articleId": 13, "article": "Sandwich1"},
+            {"articleId": 14, "article": "GitStack2"}
+          ]
+        },
+        {
+          "subcategoryId": 5,
+          "subcategory": "WrapUp",
+          "articles": [
+            {"articleId": 13, "article": "WrapUp1"},
+            {"articleId": 14, "article": "WrapUp2"}
+          ]
+        }
+      ]
+    },
+
+    {
+      "categoryId": 5,
+      "category": "primary",
+      "subcategories": [
+        {
+          "subcategoryId": 5,
+          "subcategory": "variety",
+          "articles": [
+            {"articleId": 15, "article": "variety1"},
+            {"articleId": 16, "article": "variety2"}
+          ]
+        },
+        {
+          "subcategoryId": 6,
+          "subcategory": "colors",
+          "articles": [
+            {"articleId": 17, "article": "color1"},
+            {"articleId": 18, "article": "color2"}
+          ]
+        }
+      ]
+    }
+
+
+
+  ]
+  
