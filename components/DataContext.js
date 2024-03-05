@@ -11,7 +11,7 @@ const DataProvider = ({ children }) => {
     }, []);
     
   const handleCategoryPress = (category) => {
-    navigation.navigate("SubCategories", { category }); // This line is incorrect (fix below)
+    children.navigation.navigate("SubCategories", { category }); 
   };
 
     return (

@@ -56,82 +56,29 @@
 
 
 
-// import React, { useEffect, useState } from 'react';
-// import { View, ActivityIndicator } from 'react-native';
-// import { WebView } from 'react-native-webview';
-// import * as RNFS from 'react-native-fs';
-
-// const HTMLScreen = ({ route }) => {
-//   const { article } = route.params;
-//   const [htmlContent, setHtmlContent] = useState(null);
-
-//   useEffect(() => {
-//     const fetchHtmlContent = async () => {
-//       try {
-//         // Construct the full path to the HTML file
-//         const filePath = `../HTMLData.html`;
-
-//         // Read the content of the HTML file
-//         const content = await RNFS.readFile(RNFS.`filePath`, 'utf8');
-//         setHtmlContent(content);
-//       } catch (error) {
-//         console.error('Error reading HTML file:', error);
-//       }
-//     };
-
-//     fetchHtmlContent();
-//   }, [article]);
-
-//   if (!htmlContent) {
-//     return (
-//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//         <ActivityIndicator size="large" />
-//       </View>
-//     );
-//   }
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <WebView
-//         originWhitelist={['*']}
-//         source={{ html: htmlContent }}
-//         style={{ flex: 1 }}
-//       />
-//     </View>
-//   );
-// };
-
-// export default HTMLScreen;
-
-
-
-
-
-
-
-import React, { useEffect, useState,useRef } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as RNFS from 'react-native-fs';
 
+import { HTMLData } from "../android/app/src/main/assets/HTMLData.html";
 
 const HTMLScreen = ({ route }) => {
   const { article } = route.params;
   const [htmlContent, setHtmlContent] = useState(null);
-  const webViewRef = useRef(null);
 
   useEffect(() => {
     const fetchHtmlContent = async () => {
       try {
         // Construct the destination path in the document directory
-        const destinationPath = RNFS.DocumentDirectoryPath + '/assets/htmlcontent';
+        const destinationPath = RNFS.DocumentDirectoryPath + '/HTMLData.html';
 
         // Check if the file already exists in the document directory
         const fileExists = await RNFS.exists(destinationPath);
 
         // If the file doesn't exist, copy it from assets to the document directory
         if (!fileExists) {
-          await RNFS.copyFileAssets('htmlcontent.html', destinationPath);
+          await RNFS.copyFileAssets('HTMLData.html', destinationPath);
         }
 
         // Read the content of the HTML file from the document directory
@@ -142,18 +89,8 @@ const HTMLScreen = ({ route }) => {
       }
     };
 
-
-
     fetchHtmlContent();
   }, [article]);
-  
-  useEffect(() => {
-    if (webViewRef.current) {
-      webViewRef.current.reload();
-    }
-  }, [htmlContent]);
-
-console.log("Html data is: ",htmlContent );
 
   if (!htmlContent) {
     return (
@@ -163,37 +100,15 @@ console.log("Html data is: ",htmlContent );
     );
   }
 
-
-
-  
   return (
-    <View style={styles.main}>
-<WebView
- ref={webViewRef}
- cacheEnabled={false}
-  originWhitelist={['*']}
-  // source={{ html: htmlContent  }}
-  source={{ html: '<![CDATA[' + htmlContent + ']]>' }}
-  showsHorizontalScrollIndicator={false}
-  style={{ flex: 1,width:"100%", backgroundColor:"white" }}
-  onLoad={() => console.log('WebView content loaded')}
-  
-/>
-
- 
+    <View style={{ flex: 1 }}>
+      <WebView
+        originWhitelist={['*']}
+        source={{ html: htmlContent }}
+        style={{ flex: 1 }}
+      />
     </View>
   );
 };
 
 export default HTMLScreen;
-
-
-
-
-const styles = StyleSheet.create({
-  main: {
-    backgroundColor: "#FFF",
-    padding:10,
-    flex:1
-  }
-})

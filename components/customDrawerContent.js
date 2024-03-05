@@ -19,21 +19,21 @@
 // };
 
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { DataContext } from '../components/DataContext'; // Import DataContext
+import { DataContext } from '../components/DataContext';
 
 const CustomDrawerContent = () => {
   const navigation = useNavigation();
-  const { data, handleCategoryPress } = useContext(DataContext); // Access data and handleCategoryPress from context
+  const { data, handleCategoryPress } = useContext(DataContext);
 
   return (
     <ScrollView>
       {data &&
         data.map((category) => (
           <TouchableOpacity key={category.categoryId} onPress={() => handleCategoryPress(category)}>
-            <Text style={styles.content}>{category.category}</Text>
+            <Text>{category.category}</Text>
           </TouchableOpacity>
         ))}
     </ScrollView>
@@ -41,6 +41,8 @@ const CustomDrawerContent = () => {
 };
 
 
+
+export default CustomDrawerContent;
 
 
 const styles = StyleSheet.create({
@@ -56,4 +58,3 @@ const styles = StyleSheet.create({
     margin: 10
   },
 });
-export default CustomDrawerContent;
