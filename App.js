@@ -6,7 +6,7 @@ import { DataProvider } from './components/DataContext';
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <DataProvider>
         <AppNavigation />
       </DataProvider>

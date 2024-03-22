@@ -1,104 +1,164 @@
-
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
-import DummyData from "../components/DummyData.json";
-import { DataContext } from '../components/DataContext';
-export default function HomeScreen() {
-  const navigation = useNavigation();
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    setData(DummyData);
-  }, []);
-
-  const handleCategoryPress = (category) => {
-    navigation.navigate("SubCategories", { category });
-  };
-
-  return (
-    <View style={styles.main}>
-  
-
-      {/* Display categories with onPress handling on the screen */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-        {data.map((category) => (
-          <TouchableOpacity key={category.categoryId} onPress={() => handleCategoryPress(category)}>
-            <View>
-              <Text style={styles.content}>{category.category}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </View>
-  );
-}
-
-
-const styles = StyleSheet.create({
-  main: {
-    padding:10,
-    flex:1,
-    backgroundColor: "#00001C"
-  },
- 
-  content: {
-  
-    color: "#FF4500",
-    fontSize: 16,
-    borderWidth: 1,
-    fontWeight: "600",
-    backgroundColor: "white",
-    borderColor: "grey",
-    padding: 10,
-    borderRadius: 5,
-    margin:10,
-    marginTop: 5,
-  },
-  navtext:{
-    backgroundColor:"green",
-  }
-
-
-});
-
-
-// import React, { useContext } from 'react';
+// import React, { useContext, useEffect, useState } from 'react';
 // import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 // import { useNavigation } from '@react-navigation/native';
-// import { DataContext } from '../components/DataContext'; // Import DataContext
-
+// import DummyData from "../components/DummyData.json";
+// import LocationService from '../components/Location';
 // export default function HomeScreen() {
 //   const navigation = useNavigation();
-//   const { data} = useContext(DataContext); // Access data and handleCategoryPress from context
+//   const [data, setData] = useState([]);
 
+//   useEffect(() => {
+//     setData(DummyData);
+//   }, []);
 
-//     const handleCategoryPress = (category) => {
+//   const handleCategoryPress = (category) => {
 //     navigation.navigate("SubCategories", { category });
 //   };
 
 //   return (
 //     <View style={styles.main}>
-//       {/* Bar Icon on the top left corner */}
-//       <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={styles.iconContainer}>
-//         <Icon name="bars" size={30} color="#FF4500" />
-//       </TouchableOpacity>
+//   <View style={{  flexDirection: 'row',
+//     padding: 10,
+//     paddingRight:0,
+//     paddingBottom:20,
+//     flex:0,
+//    }}>
 
-//       <Text style={styles.navtext}>HomeScreen</Text>
-
-//       {/* Display categories with onPress handling on the screen */}
-//       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
+//       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
 //         {data.map((category) => (
 //           <TouchableOpacity key={category.categoryId} onPress={() => handleCategoryPress(category)}>
-//             <View>
+//             <View >
 //               <Text style={styles.content}>{category.category}</Text>
 //             </View>
 //           </TouchableOpacity>
 //         ))}
 //       </ScrollView>
+//       </View>
+//       <LocationService/>
 //     </View>
 //   );
 // }
 
+// const styles = StyleSheet.create({
+//   main: {
+//     padding:10,
+//     paddingTop:5,
+//     flex:1,
+//     backgroundColor: "#00001C",
+
+//   },
+
+//   content: {
+
+//     color: "white",
+//     fontSize: 16,
+//     // borderWidth: 1,
+//     fontWeight: "600",
+
+//    borderColor: "grey",
+//     padding: 0,
+//     // borderRadius: 5,
+//     margin:10,
+//     // marginTop: 5,
+//   },
+
+// });
+
+import React, {useContext, useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import DummyData from '../components/DummyData.json';
+import LocationService from '../components/Location';
+import Services from '../components/Services';
+
+export default function HomeScreen() {
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    setData(DummyData);
+    // Set the first category as selected by default
+    if (DummyData.length > 0) {
+      setSelectedCategory(DummyData[0]);
+    }
+  }, []);
+
+  const handleCategoryPress = category => {
+    setSelectedCategory(category);
+    navigation.navigate('SubCategories', {category});
+  };
+
+  return (
+    <View style={styles.main}>
+      <View
+        style={{
+          flexDirection: 'row',
+          padding: 10,
+          paddingRight: 0,
+          paddingBottom: 20,
+          flex: 0,
+        }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={true}>
+          {data.map(category => (
+            <TouchableOpacity
+              key={category.categoryId}
+              onPress={() => handleCategoryPress(category)}>
+              <View
+                style={{
+                  borderBottomWidth: 2,
+                  borderBottomColor:
+                    selectedCategory === category ? '#FF4500' : 'transparent',
+                }}>
+                <Text style={styles.content}>{category.category}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+      <View style={styles.barContainer}>
+        <View style={styles.bar}>
+          <LocationService />
+       
+      </View>
+
+      
+        </View> 
+
+        {/* <Services/>   */}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  main: {
+    padding: 20,
+    flex: 1,
+    backgroundColor: '#00001C',
+  },
+  barContainer: {
+    marginTop: 25,
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 15,
+    padding: 5,
+    height: '40%',
+   
+   
+  },
+  bar: {
+    flex: 1,
+  },
+
+  content: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    color: 'white',
+  },
+});

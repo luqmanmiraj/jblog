@@ -27,7 +27,14 @@ const ArticleScreen = () => {
 
   return (
     <View style={styles.main}>
-      <Text style={styles.navtext}>{subcategory.subcategory}</Text>
+      <View style={{  flexDirection: 'row',
+    padding: 10,
+    paddingRight:0,
+    paddingBottom:20,
+    flex:0,
+   }}>
+
+    
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
       {subcategory.articles.map((article) => (
@@ -44,7 +51,7 @@ const ArticleScreen = () => {
       ))
       }</ScrollView>
     </View>
-    
+    </View>
   );
 };
 
@@ -61,19 +68,16 @@ const styles = StyleSheet.create({
   content: {
   
     color: "#FF4500",
-    fontSize: 20,
+    fontSize: 16,
     borderWidth: 1,
     fontWeight: "600",
     backgroundColor: "white",
     borderColor: "grey",
     padding: 10,
     borderRadius: 5,
-    margin:10
+    margin:10,
+    marginTop: 5,
   },
 
-  scrollContainer: {
-    paddingVertical: 10,
-   
-  },
 
 });
