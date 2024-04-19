@@ -22,7 +22,7 @@ Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _roo
 ### For Android
 
 ```bash
-# using npm
+# using npx
 npx react-native start --reset-cache
 
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ shortly provided you have set up your emulator correctly.
