@@ -84,7 +84,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     setData(DummyData);
-    // Set the first category as selected by default
+    //  first category is selected by default
     if (DummyData.length > 0) {
       setSelectedCategory(DummyData[0]);
     }
@@ -124,8 +124,8 @@ export default function HomeScreen() {
       </View>
       <View style={styles.barContainer}>
         <View style={styles.bar}>
-          <LocationService />
-       
+          
+       <LocationService />
       </View>
 
       
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     padding: 5,
+   marginLeft:10,
     height: '40%',
    
    
@@ -158,7 +159,8 @@ const styles = StyleSheet.create({
 
   content: {
     fontSize: 16,
-    paddingHorizontal: 10,
+    marginLeft: 10,
+    marginRight:13,
     color: 'white',
   },
 });

@@ -6,10 +6,8 @@ import {View, Text} from "react-native";
 
 const HTMLScreen = ({ route }) => {
   const { article } = route.params;
-
-  // Generate HTML content based on the article ID
   const generateHTMLContent = (articleId) => {
-    // Extracted dummy HTML content for demonstration
+  
     const dummyHTMLContent = {
       1: '<div><h1>Tech Tehwar - Article 1</h1><h2>This is the content of Tehwar1.</h2></div>',
       2: '<div><h1>Tech Tehwar - Article 2</h1><h2>This is the content of Tehwar2.</h2></div>',
@@ -32,7 +30,6 @@ const HTMLScreen = ({ route }) => {
       19: '<div><h1>Colors - Article 1</h1><h2>This is the content of Colors1.</h2></div>',
       20: '<div><h1>Colors - Article 2</h1><h2>This is the content of Colors2.</h2></div>',
 
-      // Add more cases as needed for each article ID
     };
 
     return dummyHTMLContent[articleId] || '<div><p>No content available for this article oh no.</p></div>';
@@ -42,7 +39,6 @@ const HTMLScreen = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-    {/* Use WebView to render HTML content */}
     <WebView
       originWhitelist={['*']}
       source={{ html: htmlContent }}

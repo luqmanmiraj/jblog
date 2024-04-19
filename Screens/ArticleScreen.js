@@ -11,7 +11,7 @@ const ArticleScreen = () => {
   const route = useRoute();
   const { subcategory } = route.params;
 
-  // Check if subcategory and its articles are defined
+  //if subcategory and its articles are defined
   if (!subcategory || !subcategory.articles) {
     return (
       <View>
@@ -21,7 +21,7 @@ const ArticleScreen = () => {
   }
 
   const handleHTMLdata = (article) => {
-    // Pass the selected article to the HTMLData component
+   
     navigation.navigate("HTMLScreen", { article });
   };
 

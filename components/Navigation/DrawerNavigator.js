@@ -3,25 +3,24 @@
 import React, { useContext } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from '../../Screens/HomeScreen';
-import SubcategoriesScreen from '../../Screens/SubCategories'; // Import SubcategoriesScreen
-import ArticleScreen from '../../Screens/ArticleScreen'; // Import ArticleScreen
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
-import CustomDrawerContent from '../customDrawerContent'; // Import CustomDrawerContent
+import SubcategoriesScreen from '../../Screens/SubCategories'; 
+import ArticleScreen from '../../Screens/ArticleScreen'; 
+import { useNavigation } from '@react-navigation/native';
+import CustomDrawerContent from '../customDrawerContent'; 
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { DataContext } from '../DataContext';
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawer = ({ data }) => { // No need for `navigation` prop here
+const CustomDrawer = ({ data }) => { 
 
   return (
     <ScrollView style={{flex:1}}>
       {data &&
         data.map((category) => (
           <TouchableOpacity key={category.categoryId} onPress={() => {
-            // Access navigation using the hook within the component
             const navigation = useNavigation();
-            navigation.navigate('SubCategories', { category }); // Navigate to SubCategories screen, passing category as params
+            navigation.navigate('SubCategories', { category }); 
           }}>
             <Text style={{backgroundColor:"#FF4500"}}>{category.category}</Text>
           </TouchableOpacity>

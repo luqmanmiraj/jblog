@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import DummyData from './DummyData.json'; // Replace with your actual data source
+import DummyData from './DummyData.json'; 
 
 const DataContext = createContext();
 

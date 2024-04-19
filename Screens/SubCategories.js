@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function SubcategoriesScreen() {
+  console.log("inside subcategories");
   const navigation = useNavigation();
   const route = useRoute();
 
   const { category } = route.params;
 
   const handleSubCategoryPress = (subcategory) => {
-    // Pass the entire subcategory object to the ArticleScreen
     navigation.navigate("ArticleScreen", { subcategory });
   };
 
@@ -23,7 +23,7 @@ export default function SubcategoriesScreen() {
    }}>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-        {/* Display subcategories for the selected category */}
+
         {category.subcategories.map((subcategory) => (
           <TouchableOpacity
             key={subcategory.subcategoryId}
@@ -31,6 +31,7 @@ export default function SubcategoriesScreen() {
             style={styles.contentcontainer}
           >
           <View>
+          
             <Text style={styles.content}>{subcategory.subcategory}</Text>
           
           </View>

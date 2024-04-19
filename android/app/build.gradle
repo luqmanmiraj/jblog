@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.google.gms.google-services'
 import org.apache.tools.ant.taskdefs.condition.Os
 
 /**
@@ -111,7 +112,9 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
  implementation project(':react-native-fs')
-
+implementation(platform("com.google.firebase:firebase-bom"))
+implementation("com.google.firebase:firebase-analytics")
+implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0"
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
