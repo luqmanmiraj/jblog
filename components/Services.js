@@ -1,4 +1,4 @@
-// import React, { useEffect } from 'react';
+ // import React, { useEffect } from 'react';
 // import { View, Text, TouchableOpacity } from 'react-native';
 // import VIForegroundService from '@voximplant/react-native-foreground-service';
 

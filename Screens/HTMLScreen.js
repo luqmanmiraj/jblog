@@ -1,54 +1,54 @@
 
 
-import React from 'react';
-import { WebView} from 'react-native-webview';
-import {View, Text} from "react-native";
+// import React from 'react';
+// import { WebView} from 'react-native-webview';
+// import {View, Text} from "react-native";
 
-const HTMLScreen = ({ route }) => {
-  const { article } = route.params;
-  const generateHTMLContent = (articleId) => {
+// const HTMLScreen = ({ route }) => {
+//   const { article } = route.params;
+//   const generateHTMLContent = (articleId) => {
   
-    const dummyHTMLContent = {
-      1: '<div><h1>Tech Tehwar - Article 1</h1><h2>This is the content of Tehwar1.</h2></div>',
-      2: '<div><h1>Tech Tehwar - Article 2</h1><h2>This is the content of Tehwar2.</h2></div>',
-      3: '<div><h1>Techoloco - Article 1</h1><h2>This is the content of Techoloco1.</h2></div>',
-      4: '<div><h1>Techoloco - Article 2</h1><h2>This is the content of Techoloco2.</h2></div>',
-      5: '<div><h1>Redux - Article 1</h1><h2>This is the content of Redux1.</h2></div>',
-      6: '<div><h1>Redux - Article 2</h1><h2>This is the content of Redux2.</h2></div>',
-      7: '<div><h1>Context - Article 1</h1><h2>This is the content of Context1.</h2></div>',
-      8: '<div><h1>Context - Article 2</h1><h2>This is the content of Context2.</h2></div>',
-      9: '<div><h1>FullStack - Article 1</h1><h2>This is the content of FullStack1.</h2></div>',
-      10: '<div><h1>FullStack - Article 2</h1><h2>This is the content of FullStack2.</h2></div>',
-      11: '<div><h1>GitStack - Article 1</h1><h2>This is the content of GitStack1.</h2></div>',
-      12: '<div><h1>GitStack - Article 2</h1><h2>This is the content of GitStack2.</h2></div>',
-      13: '<div><h1>Sandwich - Article 1</h1><h2>This is the content of Sandwich1.</h2></div>',
-      14: '<div><h1>Sandwich - Article 2</h1><h2>This is the content of Sandwich2.</h2></div>',
-      15: '<div><h1>WrapUp - Article 1</h1><h2>This is the content of WrapUp1.</h2></div>',
-      16: '<div><h1>WrapUp - Article 2</h1><h2>This is the content of WrapUp2.</h2></div>',
-      17: '<div><h1>Variety - Article 1</h1><h2>This is the content of Variety1.</h2></div>',
-      18: '<div><h1>Variety - Article 2</h1><h2>This is the content of Variety2.</h2></div>',
-      19: '<div><h1>Colors - Article 1</h1><h2>This is the content of Colors1.</h2></div>',
-      20: '<div><h1>Colors - Article 2</h1><h2>This is the content of Colors2.</h2></div>',
+//     const dummyHTMLContent = {
+//       1: '<div><h1>Tech Tehwar - Article 1</h1><h2>This is the content of Tehwar1.</h2></div>',
+//       2: '<div><h1>Tech Tehwar - Article 2</h1><h2>This is the content of Tehwar2.</h2></div>',
+//       3: '<div><h1>Techoloco - Article 1</h1><h2>This is the content of Techoloco1.</h2></div>',
+//       4: '<div><h1>Techoloco - Article 2</h1><h2>This is the content of Techoloco2.</h2></div>',
+//       5: '<div><h1>Redux - Article 1</h1><h2>This is the content of Redux1.</h2></div>',
+//       6: '<div><h1>Redux - Article 2</h1><h2>This is the content of Redux2.</h2></div>',
+//       7: '<div><h1>Context - Article 1</h1><h2>This is the content of Context1.</h2></div>',
+//       8: '<div><h1>Context - Article 2</h1><h2>This is the content of Context2.</h2></div>',
+//       9: '<div><h1>FullStack - Article 1</h1><h2>This is the content of FullStack1.</h2></div>',
+//       10: '<div><h1>FullStack - Article 2</h1><h2>This is the content of FullStack2.</h2></div>',
+//       11: '<div><h1>GitStack - Article 1</h1><h2>This is the content of GitStack1.</h2></div>',
+//       12: '<div><h1>GitStack - Article 2</h1><h2>This is the content of GitStack2.</h2></div>',
+//       13: '<div><h1>Sandwich - Article 1</h1><h2>This is the content of Sandwich1.</h2></div>',
+//       14: '<div><h1>Sandwich - Article 2</h1><h2>This is the content of Sandwich2.</h2></div>',
+//       15: '<div><h1>WrapUp - Article 1</h1><h2>This is the content of WrapUp1.</h2></div>',
+//       16: '<div><h1>WrapUp - Article 2</h1><h2>This is the content of WrapUp2.</h2></div>',
+//       17: '<div><h1>Variety - Article 1</h1><h2>This is the content of Variety1.</h2></div>',
+//       18: '<div><h1>Variety - Article 2</h1><h2>This is the content of Variety2.</h2></div>',
+//       19: '<div><h1>Colors - Article 1</h1><h2>This is the content of Colors1.</h2></div>',
+//       20: '<div><h1>Colors - Article 2</h1><h2>This is the content of Colors2.</h2></div>',
 
-    };
+//     };
 
-    return dummyHTMLContent[articleId] || '<div><p>No content available for this article oh no.</p></div>';
-  };
+//     return dummyHTMLContent[articleId] || '<div><p>No content available for this article oh no.</p></div>';
+//   };
 
-  const htmlContent = generateHTMLContent(article.articleId);
+//   const htmlContent = generateHTMLContent(article.articleId);
 
-  return (
-    <View style={{ flex: 1 }}>
-    <WebView
-      originWhitelist={['*']}
-      source={{ html: htmlContent }}
-      style={{ flex: 1 }}
-    />
-  </View>
-  );
-};
+//   return (
+//     <View style={{ flex: 1 }}>
+//     <WebView
+//       originWhitelist={['*']}
+//       source={{ html: htmlContent }}
+//       style={{ flex: 1 }}
+//     />
+//   </View>
+//   );
+// };
 
-export default HTMLScreen;
+// export default HTMLScreen;
 
 
 
@@ -108,3 +108,85 @@ export default HTMLScreen;
 // };
 
 // export default HTMLScreen;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+export default function HTMLScreen({ route }) {
+  const { article, id } = route.params;
+  const [content, setContent] = useState([]);
+  
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(
+          `https://uzvp6pj46k.execute-api.us-east-1.amazonaws.com/dev/items?title=${article}&id=${id}`,
+        );
+        const jsonData = await response.json();
+        setContent(jsonData);
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+  
+    fetchArticles();
+  }, [article, id]);
+  
+  return (
+    <View style={styles.container}>
+      {content && content.length > 0 ? (
+        content.map(item => (
+          <View key={item.id}>
+            {item.type === 'doc' && (
+              <>
+                <Text style={styles.title}>Doc URL: {item.docUrl}</Text>
+                <Text style={styles.content}>{item.html}</Text>
+              </>
+            )}
+            {item.type === 'html' && (
+              <>
+                <Text style={styles.content}>{item.html}</Text>
+                <Text style={styles.title}>Doc URL: {item.docUrl}</Text>
+              </>
+            )}
+          </View>
+        ))
+      ) : (
+        <Text>No content available</Text>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    
+  },
+  content: {
+    fontSize: 16,
+    color: '#333',
+  },
+});
