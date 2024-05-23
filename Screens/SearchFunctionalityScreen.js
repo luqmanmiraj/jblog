@@ -71,7 +71,7 @@ export default function SearchFunctionalityScreen() {
       <TextInput
       
         style={{ borderWidth: 1, borderColor: 'gray', padding: 10 , backgroundColor:"white"}}
-        placeholder="Search categories, subcategories, and articles..."
+        placeholder="Search..."
         value={searchQuery}
         onChangeText={text => setSearchQuery(text)}
         onSubmitEditing={handleSearch}

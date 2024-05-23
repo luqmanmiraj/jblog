@@ -10,6 +10,7 @@ export default function App() {
       <DataProvider>
       <FirebaseNotification/>
         <AppNavigation />
+
       </DataProvider>
     </NavigationContainer>
   );
