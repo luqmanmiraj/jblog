@@ -1,18 +1,19 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet, Alert, Text } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import * as RNFS from 'react-native-fs';
 
 const HTMLScreen = ({ route }) => {
   const { article, id } = route.params;
   const [htmlContent, setHtmlContent] = useState(null);
+  const [docUrl, setDocUrl] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [docUrl, setDocUrl] = useState("");
+  const [selectedType, setSelectedType] = useState(null); // Default type is null
 
   useEffect(() => {
-    const fetchAndSaveHtmlContent = async () => {
+    const fetchAndSaveContent = async () => {
       try {
         const filePrefix = `${article}_${id}`;
         const response = await fetch(
@@ -25,90 +26,82 @@ const HTMLScreen = ({ route }) => {
         }
 
         const jsonData = await response.json();
+        console.log("json data:", jsonData);
 
-        const latestData = jsonData.map(item => item.html).join('\n');
-        const lastUpdated = new Date().getTime();  // Using current timestamp for simplicity
+        const latestHtmlData = jsonData.map(item => item.html).join('\n');
+        const docItem = jsonData.find(item => item.type === 'doc'); // Assuming 'doc' type for document URL
 
-        const fileName = `${filePrefix}_${lastUpdated}.html`;
-        const metaFileName = `${filePrefix}_meta.json`;
-        const htmlFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-        const metaFilePath = `${RNFS.DocumentDirectoryPath}/${metaFileName}`;
+        setHtmlContent(latestHtmlData);
+        setDocUrl(docItem?.docUrl); // Set docUrl only if present
 
-        // Check if the metadata file exists
-        const metaExists = await RNFS.exists(metaFilePath);
-        let shouldUpdate = true;
-
-        if (metaExists) {
-          // Read the metadata file
-          const metaContent = await RNFS.readFile(metaFilePath, 'utf8');
-          const meta = JSON.parse(metaContent);
-
-          // Compare timestamps
-          if (meta.lastUpdated >= lastUpdated) {
-            const existingFiles = await RNFS.readDir(RNFS.DocumentDirectoryPath);
-            const latestFile = existingFiles.find(file => file.name === meta.latestFileName);
-            if (latestFile) {
-              const fileContent = await RNFS.readFile(latestFile.path, 'utf8');
-              setHtmlContent(fileContent);
-              shouldUpdate = false;
-            }
-          }
+        // Determine and set the type based on the fetched data
+        if (docItem && docItem.docUrl) {
+          setSelectedType('doc');
+        } else if (latestHtmlData) {
+          setSelectedType('html');
         }
-
-        if (shouldUpdate) {
-          // Write the new HTML content to the file
-          await RNFS.writeFile(htmlFilePath, latestData, 'utf8');
-
-          // Update the metadata file
-          const meta = { lastUpdated, latestFileName: fileName };
-          await RNFS.writeFile(metaFilePath, JSON.stringify(meta), 'utf8');
-
-          setHtmlContent(latestData);
-        }
-
-        // Set docUrl after jsonData is fetched
-        const docItem = jsonData.find(item => item.type === 'doc');
-        setDocUrl(docItem?.docUrl);
-
       } catch (error) {
-        console.error('Error fetching or reading HTML file:', error);
-        Alert.alert('Error', 'Failed to fetch or read HTML file');
+        console.error('Error fetching content:', error);
+        Alert.alert('Error', 'Failed to fetch content');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchAndSaveHtmlContent();
+    fetchAndSaveContent();
   }, [article, id]);
 
-  if (isLoading) {
-    return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+  };
 
-  return (
-    <View style={styles.container}>
-      {htmlContent ? (
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+
+    if (selectedType === 'html' && htmlContent) {
+      return (
         <WebView
           originWhitelist={['*']}
           source={{ html: htmlContent }}
           style={styles.webview}
         />
-      ) : (
-        <Text>No content available</Text>
-      )}
-      {docUrl ? (
+      );
+    } else if (selectedType === 'doc' && docUrl) {
+      return (
         <WebView
           originWhitelist={['*']}
           source={{ uri: docUrl }}
           style={styles.webview}
         />
-      ) : (
-        <Text>No document URL available</Text>
-      )}
+      );
+    } else {
+      return <Text>No content available for selected type</Text>;
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.typeButtons}>
+        <TouchableOpacity
+          style={[styles.typeButton, selectedType === 'doc' && styles.activeButton]}
+          onPress={() => handleTypeChange('doc')}
+        >
+          <Text>Doc</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.typeButton, selectedType === 'html' && styles.activeButton]}
+          onPress={() => handleTypeChange('html')}
+        >
+          <Text>HTML</Text>
+        </TouchableOpacity>
+      </View>
+      {renderContent()}
     </View>
   );
 };
@@ -124,6 +117,19 @@ const styles = StyleSheet.create({
   },
   webview: {
     flex: 1,
+  },
+  typeButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 10,
+  },
+  typeButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: '#eee',
+  },
+  activeButton: {
+    backgroundColor: '#ccc',
   },
 });
 

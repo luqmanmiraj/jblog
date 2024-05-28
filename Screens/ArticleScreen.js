@@ -16,9 +16,10 @@ export default function ArticleScreen({route}) {
   const navigation = useNavigation();
 
   const handleArticlePress=(article)=>{
-    console.log("pressed,", article)
+    console.log("pressed,", article);
+  
     setSelectedArticle(article)
-    navigation.navigate('HTMLScreen', { article:article.title ,id:article.id});
+    navigation.navigate('HTMLScreen', { article:article.title ,id:article.id, type:article.type});
   }
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function ArticleScreen({route}) {
             <View key={index} style={styles.item}>
               <Text style={styles.content}>{article.title} </Text>
               <Text style={styles.content}>{article.id} </Text>
+              <Text style={styles.content}>{article.type} </Text>
            
             </View>
           </TouchableOpacity>
