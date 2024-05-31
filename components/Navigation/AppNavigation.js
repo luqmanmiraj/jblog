@@ -309,10 +309,13 @@ export default function AppNavigation() {
         name="BLOG APP"
         component={HomeStack}
         options={{
-          headerStyle: {
+          title:"BLOGS",
+           headerStyle: {
             backgroundColor: '#00001C',
+  
           },
-          headerTintColor: 'white',
+       
+          headerTintColor: "white",
           headerTitleAlign: 'center',
           drawerStyle: {
             backgroundColor: '#00001C',
