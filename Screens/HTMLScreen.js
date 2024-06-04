@@ -268,7 +268,7 @@ const HTMLScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00001C'
+    backgroundColor: '#153448',
   },
   loaderContainer: {
     flex: 1,
@@ -283,10 +283,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 10,
+    
   },
   typeButton: {
     textAlign: 'center',
-    backgroundColor: '#00001C'
+    backgroundColor: '#153448',
+    letterSpacing:2
   },
   activeText: {
     color: '#FF4500',
@@ -296,12 +298,14 @@ const styles = StyleSheet.create({
   line: {
     color: 'white',
     fontSize: 18,
+    letterSpacing:1
   },
   contentText: {
     color: 'white',
     textAlign: 'center',
     marginTop: 20,
     fontSize: 16,
+    
   },
 });
 

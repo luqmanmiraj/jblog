@@ -78,8 +78,8 @@ export default function SubCategories({ route }) {
 
   return (
     <View style={styles.main}>
-      <Text style={styles.header}>{category}</Text>
       <Text style={styles.TextHeading}>Chapters</Text>
+      <Text style={styles.header}>{category}</Text>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {subcategories.map((subcategory, index) => (
           <TouchableOpacity key={index} onPress={() => handleSubCategoryPress(subcategory)}>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   main: {
     padding: 20,
     flex: 1,
-    backgroundColor: '#00001C',
+    backgroundColor: '#153448',
   },
   scrollView: {
     flexGrow: 1,
@@ -106,22 +106,28 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#FFFFFF1A',
     width: '100%',
+    borderColor:"#FFFFFF99",
+    borderWidth:1,
+    borderRadius:10
   },
   content: {
     fontSize: 16,
     color: 'white',
   },
   header: {
-    color: "#FF4500",
+    color: "#66E4FE",
     paddingVertical: 5,
+    fontWeight: "bold",
+    fontSize:20,
+    
   },
   TextHeading: {
     color:"white",
     fontSize:26,
     textAlign: 'center',
-    margin:20,
+    margin:10,
     fontWeight: 'bold',
       },
 });
