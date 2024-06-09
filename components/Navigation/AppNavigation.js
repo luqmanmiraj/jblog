@@ -1,5 +1,6 @@
-// import React, { useContext } from 'react';
-// import { NavigationContainer, useNavigation } from '@react-navigation/native';
+// // AppNavigation.js
+// import React, { useContext, useState, useEffect } from 'react';
+// import { useNavigation } from '@react-navigation/native';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -7,124 +8,116 @@
 // import SubCategories from '../../Screens/SubCategories';
 // import ArticleScreen from '../../Screens/ArticleScreen';
 // import HTMLScreen from '../../Screens/HTMLScreen';
-// import DrawerNavigator from './DrawerNavigator';
+// import SearchFunctionalityScreen from '../../Screens/SearchFunctionalityScreen';
 // import { DataContext } from '../DataContext';
 // import SubcategoriesScreen from '../../Screens/SubCategories';
 
-// import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-// const Stack = createNativeStackNavigator();
-// const Drawer = createDrawerNavigator();
-
-// export default function AppNavigation() {
-//   const navigation = useNavigation();
-//   const { data } = useContext(DataContext);
-
-//   const CustomDrawer = () => { // No need for `navigation` prop here
-//     return (
-//       <ScrollView>
-//         {data &&
-//           data.map((category) => (
-//             <TouchableOpacity key={category.categoryId} onPress={() => {
-//               // Access navigation using the hook within the component
-
-//               navigation.navigate('SubCategories', { category }); // Navigate to SubCategories screen, passing category as params
-//             }}>
-//               <Text>{category.category}</Text>
-//             </TouchableOpacity>
-//           ))}
-//       </ScrollView>
-//     );
-//   };
-
-//   return (
-
-//       <Drawer.Navigator initialRouteName="Home" drawerContent={() => <CustomDrawer data={data} />}>
-//          <Drawer.Screen name="BLOG APP" component={HomeStack}      options={{
-//       drawerItemStyle: { backgroundColor: '#FF4500' },
-//     }}
-
-//     />
-//       <Drawer.Screen name="CHAPTERS" component={SubcategoriesScreen} options={{ headerShown: false }} />
-//       <Drawer.Screen name="ARTICLES" component={ArticleScreen} options={{ headerShown: false }} />
-//       </Drawer.Navigator>
-
-//   );
-// }
-
-// const HomeStack = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}  />
-//     <Stack.Screen name="SubCategories" component={SubCategories}  options={{
-//       drawerItemStyle: { backgroundColor: '#FF4500' },
-//     }}/>
-//     <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
-//     <Stack.Screen name="HTMLScreen" component={HTMLScreen} />
-//   </Stack.Navigator>
-// );
-
-// import React, {useContext,useState} from 'react';
-// import {NavigationContainer, useNavigation} from '@react-navigation/native';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// import {createDrawerNavigator} from '@react-navigation/drawer';
-
-// import HomeScreen from '../../Screens/HomeScreen';
-// import SubCategories from '../../Screens/SubCategories';
-// import ArticleScreen from '../../Screens/ArticleScreen';
-// import HTMLScreen from '../../Screens/HTMLScreen';
-// import SearchFunctionalityScreen from '../../Screens/SearchFunctionalityScreen';
-// import DrawerNavigator from './DrawerNavigator';
-// import {DataContext} from '../DataContext';
-// import SubcategoriesScreen from '../../Screens/SubCategories';
-// import {EvilIcons} from '@expo/vector-icons';
-// import {Feather} from '@expo/vector-icons/Feather';
+// import { EvilIcons } from '@expo/vector-icons';
+// import { Feather } from '@expo/vector-icons/Feather';
 // import Icon from 'react-native-vector-icons/FontAwesome';
-// import FirebaseNotification from '../FirebaseNotifications';
+// import {CategoryContext} from "../Context/BreadcrumbContext"
 
 // import {
 //   View,
 //   Text,
 //   TouchableOpacity,
 //   StyleSheet,
-//   TextInput,
 //   ScrollView,
 // } from 'react-native';
 
-// export default function AppNavigation() {
-  
-//   const Drawer = createDrawerNavigator();
-//   const [searchQuery, setSearchQuery] = useState('');
+// const Drawer = createDrawerNavigator();
+// const Stack = createNativeStackNavigator();
+
+
+
+// const HomeStack = () => {
+
+//   return (
+//     <Stack.Navigator>
+//       <Stack.Screen
+//         name="Home"
+//         component={HomeScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="SubCategories"
+//         component={SubCategories}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="ArticleScreen"
+//         component={ArticleScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="HTMLScreen"
+//         component={HTMLScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="SearchFunctionalityScreen"
+//         component={SearchFunctionalityScreen}
+//         options={{ headerShown: false }}
+//       />
+//     </Stack.Navigator>
+//   );
+// };
+//   // Conditional title rendering
+//   const getTitle = () => {
+//     if (crumbcategory && crumbsubcategory) {
+//       return `${crumbcategory} > ${crumbsubcategory}`;
+//     } else if (crumbcategory) {
+//       return crumbcategory;
+//     } else {
+//       return "Tech";
+//     }
+//   };
+
+// const AppNavigation = () => {
+//   const [fetchedData, setFetchedData] = useState([]);
 //   const navigation = useNavigation();
-//   const {data} = useContext(DataContext);
 
+//   const { crumbcategory } = useContext(CategoryContext);
+// const { crumbsubcategory } = useContext(CategoryContext);
+// console.log("crumbcategory value, ", crumbcategory);
+// console.log("crumbsubcategory value, ", crumbsubcategory);
+//   useEffect(() => {
+//     fetchData();
+//   }, []);
 
+//   const fetchData = async () => {
+//     try {
+//       const response = await fetch(
+//         'https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items'
+//       );
+//       const jsonData = await response.json();
+//       setFetchedData(jsonData);
+//     } catch (error) {
+//       console.error('Error fetching data:', error);
+//     }
+//   };
 
 //   const CustomDrawer = () => {
 //     return (
-//       <ScrollView      style={{marginTop: 20}}>
-//         {data &&
-//           data.map(category => (
+//       <ScrollView style={{ marginTop: 20 }}>
+//         {fetchedData &&
+//           fetchedData.map((category, index) => (
 //             <TouchableOpacity
-              
-//               key={category.categoryId}
+//               key={index}
 //               onPress={() => {
-//                 navigation.navigate('SubCategories', {category});
-              
+//                 navigation.navigate('SubCategories', { category });
 //               }}>
-           
 //               <Text
 //                 style={{
 //                   color: 'white',
 //                   padding: 10,
 //                   paddingLeft: 20,
-//                   // borderColor: "gray",
 //                   fontWeight: 900,
-//                   // borderRadius: 4,
 //                   fontSize: 18,
 //                   marginTop: 20,
-//                   // backgroundColor: "#FFF",
-//                   // borderWidth: 1,
+//                   letterSpacing: 1
 //                 }}>
-//                 {category.category}
+//                 {category}
 //               </Text>
 //             </TouchableOpacity>
 //           ))}
@@ -135,36 +128,30 @@
 //   return (
 //     <Drawer.Navigator
 //       initialRouteName="Home"
-      
-//       drawerContent={() =>  <CustomDrawer  data={data}   
-  
-      
-//          />}>
+//       drawerContent={() => <CustomDrawer />}>
 //       <Drawer.Screen
 //         name="BLOG APP"
 //         component={HomeStack}
+     
 //         options={{
+//           title:getTitle(),
 //           headerStyle: {
-//             backgroundColor: '#00001C', 
+//             backgroundColor: '#333333',
 //           },
-//           headerTintColor: 'white', 
-//           headerTitleAlign: 'center', 
+//           headerTintColor: "white",
+//           headerTitleAlign: 'center',
 //           drawerStyle: {
-//             backgroundColor: '#00001C',
+//             backgroundColor: '#333333',
 //           },
 //           headerRight: () => (
-//             <TouchableOpacity
-          
-             
-//               style={{marginRight: 15}}>
+//             <TouchableOpacity style={{ marginRight: 15 }}>
 //               <Icon
-//                 name="search"
+//                 name="home"
 //                 size={18}
 //                 color="white"
 //                 onPress={() => {
-//                 navigation.navigate('SearchFunctionalityScreen');
-              
-//               }}
+//                   navigation.navigate('Home');
+//                 }}
 //               />
 //             </TouchableOpacity>
 //           ),
@@ -173,59 +160,207 @@
 //       <Drawer.Screen
 //         name="CHAPTERS"
 //         component={SubcategoriesScreen}
-//         options={{headerShown: false}}
+//         options={{ headerShown: false }}
 //       />
 //       <Drawer.Screen
 //         name="ARTICLES"
 //         component={ArticleScreen}
-//         options={{headerShown: false}}
+//         options={{ headerShown: false }}
 //       />
-
 //     </Drawer.Navigator>
 //   );
+// };
 
-//       }
+// export default AppNavigation;
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useContext, useState, useEffect } from 'react';
+// import { useNavigation } from '@react-navigation/native';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
+
+// import HomeScreen from '../../Screens/HomeScreen';
+// import SubCategories from '../../Screens/SubCategories';
+// import ArticleScreen from '../../Screens/ArticleScreen';
+// import HTMLScreen from '../../Screens/HTMLScreen';
+// import SearchFunctionalityScreen from '../../Screens/SearchFunctionalityScreen';
+// import SubcategoriesScreen from '../../Screens/SubCategories';
+
+// import { CategoryContext, SubCategoryContext } from '../Context/BreadcrumbContext';
+
+// import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+
+// const Drawer = createDrawerNavigator();
+// const Stack = createNativeStackNavigator();
 
 // const HomeStack = () => {
-//   const Stack = createNativeStackNavigator();
-//   return(
-//   <Stack.Navigator>
-//     <Stack.Screen
-//       name="Home"
-//       component={HomeScreen}
-//       options={{headerShown: false}}
-//     />
-//     <Stack.Screen
-//       name="SubCategories"
-//       component={SubCategories}
-//       options={{headerShown: false}}
-//     />
-//     <Stack.Screen
-//       name="ArticleScreen"
-//       component={ArticleScreen}
-//       options={{headerShown: false}}
-//     />
-//     <Stack.Screen
-//       name="HTMLScreen"
-//       component={HTMLScreen}
-//       options={{headerShown: false}}
-//     />
-//      <Stack.Screen
-//       name="SearchFunctionalityScreen"
-//       component={SearchFunctionalityScreen}
-//       options={{headerShown: false}}
-//     />
-//   </Stack.Navigator>
-//   ) 
-//   }
+//   return (
+//     <Stack.Navigator>
+//       <Stack.Screen
+//         name="Home"
+//         component={HomeScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="SubCategories"
+//         component={SubCategories}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="ArticleScreen"
+//         component={ArticleScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="HTMLScreen"
+//         component={HTMLScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="SearchFunctionalityScreen"
+//         component={SearchFunctionalityScreen}
+//         options={{ headerShown: false }}
+//       />
+//     </Stack.Navigator>
+//   );
+// };
+
+// const AppNavigation = () => {
+//   const [fetchedData, setFetchedData] = useState([]);
+//   const navigation = useNavigation();
+//   const { crumbcategory } = useContext(CategoryContext);
+//   const { crumbsubcategory } = useContext(SubCategoryContext);
+
+//   useEffect(() => {
+//     fetchData();
+//   }, []);
+
+//   const fetchData = async () => {
+//     try {
+//       const response = await fetch('https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items');
+//       const jsonData = await response.json();
+//       setFetchedData(jsonData);
+//     } catch (error) {
+//       console.error('Error fetching data:', error);
+//     }
+//   };
+
+//   const CustomDrawer = () => {
+//     return (
+//       <ScrollView style={{ marginTop: 20 }}>
+//         {fetchedData &&
+//           fetchedData.map((category, index) => (
+//             <TouchableOpacity
+//               key={index}
+//               onPress={() => {
+//                 navigation.navigate('SubCategories', { category });
+//               }}>
+//               <Text
+//                 style={{
+//                   color: 'white',
+//                   padding: 10,
+//                   paddingLeft: 20,
+//                   fontWeight: '900',
+//                   fontSize: 18,
+//                   marginTop: 20,
+//                   letterSpacing: 1,
+//                 }}>
+//                 {category}
+//               </Text>
+//             </TouchableOpacity>
+//           ))}
+//       </ScrollView>
+//     );
+//   };
+
+//   // Conditional title rendering
+  
+//   const getTitle = () => {
+//     if (crumbcategory && crumbsubcategory) {
+//       return `${crumbcategory} > ${crumbsubcategory}`;
+//     } else if (crumbcategory) {
+//       return crumbcategory;
+//     } else {
+//       return "Tech";
+//     }
+//   };
+
+//   return (
+//     <Drawer.Navigator
+//       initialRouteName="Home"
+//       drawerContent={() => <CustomDrawer />}
+//       screenOptions={{
+//         headerStyle: {
+//           backgroundColor: '#333333',
+//         },
+//         headerTintColor: "white",
+//         headerTitleAlign: 'center',
+//         drawerStyle: {
+//           backgroundColor: '#333333',
+//         },
+//         headerRight: () => (
+//           <TouchableOpacity style={{ marginRight: 15 }}>
+//             <Icon
+//               name="home"
+//               size={18}
+//               color="white"
+//               onPress={() => {
+//                 crumbcategory('');
+//                 crumbsubcategory('');
+//                 navigation.navigate('Home');
+//               }}
+//             />
+//           </TouchableOpacity>
+//         ),
+//       }}
+//     >
+//       <Drawer.Screen
+//         name="BLOG APP"
+//         component={HomeStack}
+//         options={{
+//           title: getTitle(),
+//              drawerContentStyle:{
+//             backgroundColor:"#c6cbef",
+//           }
+//         }}
+     
+//       />
+//       <Drawer.Screen
+//         name="CHAPTERS"
+//         component={SubcategoriesScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <Drawer.Screen
+//         name="ARTICLES"
+//         component={ArticleScreen}
+//         options={{ headerShown: false }}
+//       />
+//     </Drawer.Navigator>
+//   );
+// };
+
+// export default AppNavigation;
 
 
 
 
 
-// AppNavigation.js
+
+
+
 import React, { useContext, useState, useEffect } from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -234,122 +369,17 @@ import SubCategories from '../../Screens/SubCategories';
 import ArticleScreen from '../../Screens/ArticleScreen';
 import HTMLScreen from '../../Screens/HTMLScreen';
 import SearchFunctionalityScreen from '../../Screens/SearchFunctionalityScreen';
-import DrawerNavigator from './DrawerNavigator';
-import { DataContext } from '../DataContext';
 import SubcategoriesScreen from '../../Screens/SubCategories';
-import { EvilIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons/Feather';
+
+import { CategoryContext, SubCategoryContext } from '../Context/BreadcrumbContext';
+
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FirebaseNotification from '../FirebaseNotifications';
 
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-} from 'react-native';
-
-export default function AppNavigation() {
-  const Drawer = createDrawerNavigator();
-  const [searchQuery, setSearchQuery] = useState('');
-  const navigation = useNavigation();
-
-  const [fetchedData, setFetchedData] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        'https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items'
-      );
-      const jsonData = await response.json();
-      setFetchedData(jsonData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const CustomDrawer = () => {
-    return (
-      <ScrollView style={{ marginTop: 20 }}>
-        {fetchedData &&
-          fetchedData.map((category,index) => (
-            <TouchableOpacity
-             key={index}
-              onPress={() => {
-                navigation.navigate('SubCategories', { category });
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                  padding: 10,
-                  paddingLeft: 20,
-                  fontWeight: 900,
-                  fontSize: 18,
-                  marginTop: 20,
-                }}>
-                {category}
-              </Text>
-            </TouchableOpacity>
-          ))}
-      </ScrollView>
-    );
-  };
-
-  return (
-    <Drawer.Navigator
-      initialRouteName="Home"
-      drawerContent={() => <CustomDrawer />}>
-      <Drawer.Screen
-        name="BLOG APP"
-        component={HomeStack}
-        options={{
-          title:"BLOGS",
-           headerStyle: {
-            backgroundColor: '#00001C',
-  
-          },
-       
-          headerTintColor: "white",
-          headerTitleAlign: 'center',
-          drawerStyle: {
-            backgroundColor: '#00001C',
-          },
-          headerRight: () => (
-            <TouchableOpacity style={{ marginRight: 15 }}>
-              <Icon
-                name="search"
-                size={18}
-                color="white"
-                onPress={() => {
-                  navigation.navigate('SearchFunctionalityScreen');
-                }}
-              />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="CHAPTERS"
-        component={SubcategoriesScreen}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        name="ARTICLES"
-        component={ArticleScreen}
-        options={{ headerShown: false }}
-      />
-    </Drawer.Navigator>
-  );
-}
+const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
-  const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -380,3 +410,116 @@ const HomeStack = () => {
     </Stack.Navigator>
   );
 };
+
+const AppNavigation = () => {
+  const [fetchedData, setFetchedData] = useState([]);
+  const navigation = useNavigation();
+  const { crumbcategory, setCategory } = useContext(CategoryContext);
+  const { crumbsubcategory, setSubcategory } = useContext(SubCategoryContext);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items');
+      const jsonData = await response.json();
+      setFetchedData(jsonData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const CustomDrawer = () => {
+    return (
+      <ScrollView style={{ marginTop: 20 }}>
+        {fetchedData &&
+          fetchedData.map((category, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                setCategory('');  
+                setSubcategory('');
+                navigation.navigate('SubCategories', { category });
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  padding: 10,
+                  paddingLeft: 20,
+                  fontWeight: '900',
+                  fontSize: 18,
+                  marginTop: 20,
+                  letterSpacing: 1,
+                }}>
+                {category}
+              </Text>
+            </TouchableOpacity>
+          ))}
+      </ScrollView>
+    );
+  };
+
+  const getTitle = () => {
+    if (crumbcategory && crumbsubcategory) {
+      return `${crumbcategory} > ${crumbsubcategory}`;
+    } else if (crumbcategory) {
+      return crumbcategory;
+    } else {
+      return "Tech";
+    }
+  };
+
+  return (
+    <Drawer.Navigator
+      initialRouteName="Home"
+      drawerContent={() => <CustomDrawer />}
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#333333',
+        },
+        headerTintColor: "white",
+        headerTitleAlign: 'center',
+        drawerStyle: {
+          backgroundColor: '#333333',
+        },
+        headerRight: () => (
+          <TouchableOpacity style={{ marginRight: 15 }}>
+            <Icon
+              name="home"
+              size={18}
+              color="white"
+              onPress={() => {
+                setCategory('');
+                setSubcategory('');
+                navigation.navigate('Home');
+              }}
+            />
+          </TouchableOpacity>
+        ),
+      }}
+    >
+      <Drawer.Screen
+        name="BLOG APP"
+        component={HomeStack}
+        options={{
+          title: getTitle(),
+          fontSize:18
+        }}
+      />
+      <Drawer.Screen
+        name="CHAPTERS"
+        component={SubcategoriesScreen}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="ARTICLES"
+        component={ArticleScreen}
+        options={{ headerShown: false }}
+      />
+    </Drawer.Navigator>
+  );
+};
+
+export default AppNavigation;

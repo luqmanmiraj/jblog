@@ -1,42 +1,76 @@
 
 
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { CategoryContext, SubCategoryContext } from '../components/Context/BreadcrumbContext';
 
 export default function ArticleScreen({ route }) {
+
+  const { setCategory } = useContext(CategoryContext);
+  const { setSubcategory } = useContext(SubCategoryContext);
+
   const { category, subcategory } = route.params;
   const [articles, setArticles] = useState([]);
-  const [selectedArticle, setSelectedArticle] = useState(null);
-
   const navigation = useNavigation();
-
+  
   const handleArticlePress = (article) => {
-    setSelectedArticle(article)
     navigation.navigate('HTMLScreen', { article: article.title, id: article.id, type: article.type });
-  }
+  };
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    setCategory(category);
+    setSubcategory(subcategory);
+
+    const loadCachedData = async () => {
       try {
-        const response = await fetch(
-          `https://4uvh5c5t2g.execute-api.us-east-1.amazonaws.com/dev/items?tech=${category}&parent=${subcategory}`,
-        );
-        const jsonData = await response.json();
-        setArticles(jsonData);
+        const cachedDataString = await AsyncStorage.getItem(`articles_${category}_${subcategory}`);
+        if (cachedDataString) {
+          const cachedData = JSON.parse(cachedDataString);
+          setArticles(cachedData.data);
+     
+        }
+        fetchArticles(); 
       } catch (error) {
-        console.error('Error fetching articles:', error);
+        console.error('Error loading cached data:', error);
       }
     };
 
-    fetchArticles();
+    loadCachedData();
   }, [category, subcategory]);
+
+  const fetchArticles = async () => {
+    try {
+      const response = await fetch(
+        `https://4uvh5c5t2g.execute-api.us-east-1.amazonaws.com/dev/items?tech=${category}&parent=${subcategory}`,
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const jsonData = await response.json();
+      setArticles(jsonData);
+
+      const dataToSave = {
+        data: jsonData,
+        timestamp: Date.now(),
+      };
+
+      try {
+        await AsyncStorage.setItem(`articles_${category}_${subcategory}`, JSON.stringify(dataToSave));
+        console.log('Data saved to AsyncStorage');
+      } catch (error) {
+        console.error('Error saving data to AsyncStorage:', error);
+      }
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    }
+  };
 
   return (
     <View style={styles.main}>
+  
       <Text style={styles.TextHeading}>Articles</Text>
-      <Text style={styles.header}>{category} / {subcategory}</Text>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {articles.map((article, index) => (
           <TouchableOpacity key={index} onPress={() => handleArticlePress(article)}>
@@ -50,11 +84,12 @@ export default function ArticleScreen({ route }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   main: {
     padding: 20,
     flex: 1,
-    backgroundColor: '#153448',
+    backgroundColor: '#F0F0F0', 
   },
   scrollView: {
     flexGrow: 1,
@@ -62,28 +97,29 @@ const styles = StyleSheet.create({
   item: {
     padding: 10,
     marginVertical: 5,
-    borderRadius: 5,
-    backgroundColor: '#FFFFFF1A',
-    width: '100%',
-    borderColor:"#FFFFFF99",
-    borderWidth:1,
-    borderRadius:10
+    borderRadius: 10, 
+    backgroundColor: '#FFFFFF',
+    borderColor: '#CCCCCC', 
+    borderWidth: 1,
   },
   content: {
     fontSize: 16,
-    color: 'white',
+    color: 'black',
+    fontFamily: 'Helvetica', 
   },
   header: {
-    color: "#66E4FE",
+    color: "#007AFF",
     paddingVertical: 5,
     fontWeight: "bold",
-    fontSize:20,
+    fontSize: 22,
+    fontFamily: 'Helvetica',
   },
   TextHeading: {
-    color: 'white',
-    fontSize: 26,
+    color: "#333333",
+    fontSize: 28,
     textAlign: 'center',
     margin: 10,
     fontWeight: 'bold',
+    fontFamily: 'Helvetica',
   },
 });

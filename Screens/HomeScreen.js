@@ -1,5 +1,6 @@
 
-import React, {useEffect, useState} from 'react';
+
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,7 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function HomeScreen() {
   const [categories, setCategories] = useState([]);
@@ -24,39 +26,34 @@ export default function HomeScreen() {
 
   useEffect(() => {
     loadCachedData();
+    
   }, []);
 
   useEffect(() => {
     fetchCategories();
-    fetchData();
+    fetchDataInBackground();
   }, []);
 
   const loadCachedData = async () => {
     try {
-      const cachedDataString = await AsyncStorage.getItem(
-        'categoriesWithSubcategories',
-      );
+      const cachedDataString = await AsyncStorage.getItem('categoriesWithSubcategories');
       if (cachedDataString) {
         const cachedData = JSON.parse(cachedDataString);
-        const isFresh = isDataFresh(cachedData.timestamp);
-
-        if (isFresh) {
-          setData(cachedData.data);
-          setIsLoading(false);
-        } else {
-          console.log('Cached data is not fresh, fetching new data');
-          fetchData();
-        }
+        setData(cachedData.data);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Error loading cached data:', error);
+      setIsLoading(false);
     }
   };
 
-  const fetchData = async () => {
+  const fetchDataInBackground = async () => {
     try {
       const response = await fetch(
-        'https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items',
+        'https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items'
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -64,30 +61,26 @@ export default function HomeScreen() {
       const categories = await response.json();
 
       const categoryWithSubcategories = await Promise.all(
-        categories.map(async category => {
+        categories.map(async (category) => {
           try {
             const subcategoriesResponse = await fetch(
-              `https://khedu5yl4a.execute-api.us-east-1.amazonaws.com/dev/items?tech=${category}`,
+              `https://khedu5yl4a.execute-api.us-east-1.amazonaws.com/dev/items?tech=${category}`
             );
             if (!subcategoriesResponse.ok) {
               throw new Error(
-                `HTTP error! status: ${subcategoriesResponse.status}`,
+                `HTTP error! status: ${subcategoriesResponse.status}`
               );
             }
             const subcategories = await subcategoriesResponse.json();
-            return {category, subcategories};
+            return { category, subcategories };
           } catch (error) {
-            console.error(
-              `Error fetching subcategories for ${category}:`,
-              error,
-            );
-            return {category, subcategories: []};
+            console.error(`Error fetching subcategories for ${category}:`, error);
+            return { category, subcategories: [] };
           }
-        }),
+        })
       );
 
       setData(categoryWithSubcategories);
-      setIsLoading(false);
 
       const dataToSave = {
         data: categoryWithSubcategories,
@@ -97,7 +90,7 @@ export default function HomeScreen() {
       try {
         await AsyncStorage.setItem(
           'categoriesWithSubcategories',
-          JSON.stringify(dataToSave),
+          JSON.stringify(dataToSave)
         );
         console.log('Data saved to AsyncStorage');
       } catch (error) {
@@ -105,14 +98,13 @@ export default function HomeScreen() {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      setIsLoading(false);
     }
   };
 
   const fetchCategories = async () => {
     try {
       const response = await fetch(
-        'https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items',
+        'https://tujwiopckf.execute-api.us-east-1.amazonaws.com/dev/items'
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -127,19 +119,13 @@ export default function HomeScreen() {
     }
   };
 
-  const isDataFresh = cachedDataTimestamp => {
-    const freshnessThresholdInMs = 1000 * 60 * 60; // Example: 1 hour
-    const currentTime = Date.now();
-    return currentTime - cachedDataTimestamp < freshnessThresholdInMs;
-  };
-
-  const handleCategoryPress = category => {
+  const handleCategoryPress = (category) => {
     setSelectedCategory(category);
     setExpandedSubCategories({});
     setExpandedArticles({});
   };
 
-  const handleArticlePress = article => {
+  const handleArticlePress = (article) => {
     setSelectedArticle(article);
     navigation.navigate('HTMLScreen', {
       article: article.title,
@@ -150,7 +136,7 @@ export default function HomeScreen() {
 
   const handleSubCategoryPress = async (subcategory, category) => {
     setSelectedCategory(category);
-    setExpandedSubCategories(prevState => ({
+    setExpandedSubCategories((prevState) => ({
       ...prevState,
       [subcategory]: !prevState[subcategory],
     }));
@@ -158,13 +144,13 @@ export default function HomeScreen() {
     if (!expandedSubCategories[subcategory]) {
       try {
         const response = await fetch(
-          `https://4uvh5c5t2g.execute-api.us-east-1.amazonaws.com/dev/items?tech=${category}&parent=${subcategory}`,
+          `https://4uvh5c5t2g.execute-api.us-east-1.amazonaws.com/dev/items?tech=${category}&parent=${subcategory}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const articlesData = await response.json();
-        setArticles(prevState => ({
+        setArticles((prevState) => ({
           ...prevState,
           [subcategory]: articlesData,
         }));
@@ -180,15 +166,14 @@ export default function HomeScreen() {
     }
 
     return categories.map((category, index) => (
-      <TouchableOpacity
-        key={index}
-        onPress={() => handleCategoryPress(category)}>
+      <TouchableOpacity key={index} onPress={() => handleCategoryPress(category)}>
         <View style={styles.item}>
           <Text
             style={[
               styles.content,
               category === selectedCategory ? styles.selectedContent : null,
-            ]}>
+            ]}
+          >
             {category || 'null'}
           </Text>
         </View>
@@ -204,15 +189,14 @@ export default function HomeScreen() {
       return <Text style={styles.content}>No data available</Text>;
     }
 
-    const selectedData = data.find(item => item.category === selectedCategory);
+    const selectedData = data.find((item) => item.category === selectedCategory);
     if (!selectedData) {
       return <Text style={styles.content}>No subcategories available</Text>;
     }
 
     return (
       <View key={selectedData.category}>
-        <TouchableOpacity
-          onPress={() => handleCategoryPress(selectedData.category)}>
+        <TouchableOpacity onPress={() => handleCategoryPress(selectedData.category)}>
           <View style={styles.categoryItem}>
             <Text style={[styles.categoryText, styles.selectedCategoryText]}>
               {selectedData.category || 'null'}
@@ -226,16 +210,34 @@ export default function HomeScreen() {
                 <TouchableOpacity
                   onPress={() =>
                     handleSubCategoryPress(subcategory, selectedData.category)
-                  }>
+                  }
+                >
                   <View style={styles.subcategoryItem}>
                     <Text style={styles.subcategoryText}>{subcategory}</Text>
                     <Text style={styles.expandCollapseText}>
-                      {expandedSubCategories[subcategory] ? '^' : '>'}
+                      {expandedSubCategories[subcategory] ?    <TouchableOpacity style={{ marginRight: 15 }}>
+              <Icon
+                name="long-arrow-up"
+                size={18}
+                color="#333333"
+                onPress={() => {
+                  navigation.navigate('Home');
+                }}
+              />
+            </TouchableOpacity> :    <TouchableOpacity style={{ marginRight: 15 }}>
+              <Icon
+                name="long-arrow-down"
+                size={18}
+                color="#333333"
+                onPress={() => {
+                  navigation.navigate('Home');
+                }}
+              />
+            </TouchableOpacity>}
                     </Text>
                   </View>
                 </TouchableOpacity>
-                {expandedSubCategories[subcategory] &&
-                  renderArticles(subcategory)}
+                {expandedSubCategories[subcategory] && renderArticles(subcategory)}
               </View>
             ))}
           </View>
@@ -244,22 +246,17 @@ export default function HomeScreen() {
     );
   };
 
-  const renderArticles = subcategory => {
+  const renderArticles = (subcategory) => {
     const subcategoryArticles = articles[subcategory] || [];
 
-    if (
-      !Array.isArray(subcategoryArticles) ||
-      subcategoryArticles.length === 0
-    ) {
+    if (!Array.isArray(subcategoryArticles) || subcategoryArticles.length === 0) {
       return <Text style={styles.content}></Text>;
     }
 
     return subcategoryArticles.map((article, index) => (
-      <TouchableOpacity onPress={() => handleArticlePress(article)}>
-        <View key={index} style={styles.articleItem}>
-          <Text style={styles.articleText}>
-            {article.title}
-          </Text>
+      <TouchableOpacity key={index} onPress={() => handleArticlePress(article)}>
+        <View style={styles.articleItem}>
+          <Text style={styles.articleText}>{article.title}</Text>
         </View>
       </TouchableOpacity>
     ));
@@ -267,7 +264,6 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.main}>
-      <Text style={styles.TextHeading}>Tech</Text>
       <View style={styles.navbar}>
         <ScrollView vertical showsVerticalScrollIndicator={true}>
           <View style={styles.Navbarcontainer}>{renderCategoryTabs()}</View>
@@ -275,19 +271,20 @@ export default function HomeScreen() {
       </View>
       <View>
         <ScrollView>
-          <View style={styles.listcontainer}>
-            {renderSelectedCategoryAndSubcategories()}
-          </View>
+          <View style={styles.listcontainer}>{renderSelectedCategoryAndSubcategories()}</View>
         </ScrollView>
       </View>
     </View>
   );
 }
 
+
+
+
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#153448',
+    backgroundColor: '#F0F0F0', 
     padding: 10,
   },
   Navbarcontainer: {
@@ -299,26 +296,28 @@ const styles = StyleSheet.create({
   },
   listcontainer: {
     marginTop: 30,
-    backgroundColor: '#FFFFFF1A',
+    backgroundColor: '#FFFFFF', 
     paddingHorizontal: 10,
     flexDirection: 'column',
-    borderColor: '#FFFFFF99',
+    borderColor: '#CCCCCC', 
     borderWidth: 1,
     borderRadius: 10,
+    elevation:10,
+    shadowOpacity:"#333333"
   },
   categoryItem: {
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: '#CCCCCC', 
   },
   categoryText: {
     fontSize: 18,
-    color: '#66E4FE',
+    color: 'black', 
     textAlign: 'left',
     borderRadius: 15,
   },
   selectedCategoryText: {
-    color: 'rgb(239, 50, 33)',
+    color: '#007AFF', 
     fontWeight: 'bold',
   },
   subcategoryContainer: {
@@ -327,69 +326,70 @@ const styles = StyleSheet.create({
   subcategoryItem: {
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: '#CCCCCC', 
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   subcategoryText: {
     fontSize: 16,
-    color: 'white',
+    color: 'black', 
     letterSpacing: 1,
   },
   ArticleText: {
     fontSize: 16,
-    color: 'white',
+    color: 'black',
     letterSpacing: 1,
   },
   expandCollapseText: {
     fontSize: 16,
-    color: '#66E4FE',
+    color: '#666666', 
     marginLeft: 5,
   },
   content: {
     fontSize: 16,
-    color: '#66E4FE',
+    color: 'black', 
     textAlign: 'center',
     flexDirection: 'row',
     letterSpacing: 1,
   },
   TextHeading: {
-    color: 'white',
+    color: '#007AFF',
     fontSize: 26,
     textAlign: 'center',
     marginBottom: 20,
     fontWeight: 'bold',
-    fontFamily: 'Clash Grotesk',
-    
+    fontFamily: 'helvetica', 
   },
   item: {
-    backgroundColor: '#FFFFFF1A',
+    backgroundColor: '#FFFFFF', 
     padding: 10,
     margin: 7,
     borderRadius: 10,
-    borderColor: '#FFFFFF99',
-      fontFamily: 'Clash Grotesk',
+    borderColor: '#CCCCCC', 
+    fontFamily: 'helvetica', 
     borderWidth: 1,
     flexDirection: 'row',
-
   },
   selectedContent: {
-    color: 'rgb(239, 50, 33)',
+    color: '#007AFF', 
     fontWeight: 'bold',
   },
   articleItem: {
     paddingVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: '#CCCCCC', 
   },
   articleText: {
     fontSize: 18,
-    color: 'white',
+    color: 'black', 
     paddingLeft: 20,
   },
   articleContent: {
     fontSize: 14,
-    color: '#fff',
+    color: 'black',
   },
 });
+
+
+

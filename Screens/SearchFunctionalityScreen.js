@@ -4,7 +4,7 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { DataContext } from '../components/DataContext';
+// import { DataContext } from '../components/DataContext';
 
 export default function SearchFunctionalityScreen() {
   const { data } = useContext(DataContext);

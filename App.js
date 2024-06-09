@@ -1,17 +1,19 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {Component} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import AppNavigation from './components/Navigation/AppNavigation';
-import { DataProvider } from './components/DataContext';
-import FirebaseNotification from './components/FirebaseNotifications';
+import {DataProvider} from './components/DataContext';
+import {CategoryProvider} from './components/Context/BreadcrumbContext';
+import {StatusBar} from 'react-native';
+
 export default function App() {
   return (
-    <NavigationContainer >
-      <DataProvider>
-      {/* <FirebaseNotification/> */}
-        <AppNavigation />
+    <CategoryProvider>
+      <NavigationContainer>
+        <StatusBar backgroundColor="black" barStyle="light-content" />
 
-      </DataProvider>
-    </NavigationContainer>
+        <AppNavigation />
+      </NavigationContainer>
+    </CategoryProvider>
   );
 }
