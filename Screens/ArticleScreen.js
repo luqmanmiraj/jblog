@@ -1,102 +1,5 @@
 
 
-
-// import React, { useState, useEffect, useContext  } from 'react';
-// import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-//  import { CategoryContext, SubCategoryContext } from '../components/Context/BreadcrumbContext';
-//  import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// export default function ArticleScreen({ route }) {
-//   const { category, subcategory } = route.params;
-//   const [articles, setArticles] = useState([]);
-//   const [selectedArticle, setSelectedArticle] = useState(null);
-
-//   const { setCategory } = useContext(CategoryContext);
-//   const { setSubcategory } = useContext(SubCategoryContext);
-
-//   const navigation = useNavigation();
-
-//   const handleArticlePress = (article) => {
-//     setSelectedArticle(article)
-//     navigation.navigate('HTMLScreen', { article: article.title, id: article.id, type: article.type });
-//   }
-
-
-//   useEffect(() => {
-//     setCategory(category);
-//     setSubcategory(subcategory);
-
-//     const loadCachedData = async () => {
-//       try {
-//         const cachedDataString = await AsyncStorage.getItem(`articles_${category}_${subcategory}`);
-//         if (cachedDataString) {
-//           const cachedData = JSON.parse(cachedDataString);
-//           setArticles(cachedData.data);
-     
-//         }
-//         fetchArticles(); // Fetch fresh data in the background
-//       } catch (error) {
-//         console.error('Error loading cached data:', error);
-//       }
-//     };
-
-//     loadCachedData();
-//     fetchArticles();
-    
-//   }, [category, subcategory]);
-
-
-
-
-
-
-
-
-//        const fetchArticles = async () => {
-//           try {
-//             const response = await fetch(
-//               `https://4uvh5c5t2g.execute-api.us-east-1.amazonaws.com/dev/items?tech=${category}&parent=${subcategory}`,
-//             );
-//             if (!response.ok) {
-//               throw new Error(`HTTP error! status: ${response.status}`);
-//             }
-//             const jsonData = await response.json();
-//             setArticles(jsonData);
-      
-//             const dataToSave = {
-//               data: jsonData,
-//               timestamp: Date.now(),
-//             };
-      
-//             try {
-//               await AsyncStorage.setItem(`articles_${category}_${subcategory}`, JSON.stringify(dataToSave));
-//               console.log('Data saved to AsyncStorage');
-//             } catch (error) {
-//               console.error('Error saving data to AsyncStorage:', error);
-//             }
-//           } catch (error) {
-//             console.error('Error fetching articles:', error);
-//           }
-//         };
-//   return (
-//     <View style={styles.main}>
-//       <Text style={styles.TextHeading}>Articles</Text>
-//       <Text style={styles.header}>{category} / {subcategory}</Text>
-//       <ScrollView contentContainerStyle={styles.scrollView}>
-//         {articles.map((article, index) => (
-//           <TouchableOpacity key={index} onPress={() => handleArticlePress(article)}>
-//             <View style={styles.item}>
-//               <Text style={styles.content}>{article.title}</Text>
-//             </View>
-//           </TouchableOpacity>
-//         ))}
-//       </ScrollView>
-//     </View>
-//   );
-// }
-
-
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -130,7 +33,7 @@ export default function ArticleScreen({ route }) {
             setArticles(cachedData.data);
           }
         }
-        fetchArticles(); // Fetch fresh data in the background
+        fetchArticles(); 
       } catch (error) {
         console.error('Error loading cached data:', error);
       }
@@ -207,7 +110,7 @@ const styles = StyleSheet.create({
   main: {
     padding: 20,
     flex: 1,
-    backgroundColor: '#F0F0F0', // White background
+    backgroundColor: '#F0F0F0', 
   },
   scrollView: {
     flexGrow: 1,
@@ -215,15 +118,15 @@ const styles = StyleSheet.create({
   item: {
     padding: 10,
     marginVertical: 5,
-    borderRadius: 10, // Unified borderRadius
+    borderRadius: 10, 
     backgroundColor: '#FFFFFF',
-    borderColor: '#CCCCCC', // Light border color
+    borderColor: '#CCCCCC', 
     borderWidth: 1,
   },
   content: {
     fontSize: 16,
-    color: 'black', // Dark text color
-    fontFamily: 'Helvetica', // Helvetica font family
+    color: 'black', 
+    fontFamily: 'Helvetica', 
   },
   header: {
     color: "#007AFF",
