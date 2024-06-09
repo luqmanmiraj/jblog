@@ -115,6 +115,10 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
   },
+  loadingText: {
+    fontSize: 20,
+    color: 'black',
+  },
   item: {
     padding: 10,
     marginVertical: 5,
